@@ -64,7 +64,7 @@ require('related_files').setup({
     close_on_select = true,
     stop_on_first_hit = false,
   },
-  related = {
+  groups = {
     c = {
       is_in_group = function(file_path)
         local _, _, ext = sep(file_path)
