@@ -3,6 +3,8 @@
 `related_files.nvim` is an unopinionated, lightweight plugin for grouping together filepaths
 using regex to allow for easy hopping between files using location lists.
 
+![example](./example.gif)
+
 ## Quick start
 
 ```lua
