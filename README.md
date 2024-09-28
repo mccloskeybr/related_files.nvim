@@ -6,6 +6,7 @@ using regex to allow for easy hopping between files using location lists.
 ## Quick start
 
 ```lua
+-- Lazy.nvim
 {
   'mccloskeybr/related_files.nvim'
   keys = {
@@ -31,13 +32,15 @@ using regex to allow for easy hopping between files using location lists.
 
 ### Groups
 
-related_files.nvim is unopinionated -- there are no default file groups to lean on. You are
+`related_files.nvim` is unopinionated -- there are no default file groups to lean on. You are
 expected to manually configure all file extension groups useful to you in order to use it properly.
 
 There are 2 callback functions you are required to define per group:
 
 - `is_type(file_path)`: should return a bool if the given `file_path` is a part of this group.
 - `get_related(file_path)`: should return a list of strings for all files in a group with `file_path`.
+
+The name of each group is arbitrary / does not matter.
 
 ### Opts
 
@@ -51,7 +54,7 @@ There are 2 callback functions you are required to define per group:
 ### Example
 
 ```lua
--- dir1/dir2/file.ext --> (dir1/dir2/, file, ext)
+-- dir1/dir2/file.ext --> (dir1/dir2/, file, .ext)
 local sep = function(file_path)
   return string.match(file_path, '(.+[\\/])(.+[^%.])(%..+)$')
 end
@@ -85,7 +88,7 @@ require('related_files').setup({
 ## Functions
 
 `related_files.nvim` exposes a single function: `require('related_files').open()`.
-This will collect all configured related files for the current file and populate then in
+This will collect all configured related files for the current file and populate them in
 a location list associated with the current buffer.
 
-There is no default keybind. I recommend placing this under `<Leader>r`.
+There is no default keybind. I recommend configuring `<Leader>r`.
