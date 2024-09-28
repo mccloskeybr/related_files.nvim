@@ -20,9 +20,12 @@ using regex to allow for easy hopping between files using location lists.
   },
   config = function()
     require('related_files').setup({
+      config = {
+        -- see Opts.
+      },
       groups = {
-        -- must define yourself, see Configuration.
-      }
+        -- see Groups.
+      },
     })
   end
 }
@@ -33,7 +36,7 @@ using regex to allow for easy hopping between files using location lists.
 ### Groups
 
 `related_files.nvim` is unopinionated -- there are no default file groups to lean on. You are
-expected to manually configure all file extension groups useful to you in order to use it properly.
+expected to manually configure all groups that are useful to you in order to use it properly.
 
 There are 2 callback functions you are required to define per group:
 
@@ -68,9 +71,7 @@ require('related_files').setup({
     c = {
       is_in_group = function(file_path)
         local _, _, ext = sep(file_path)
-        if ext == '.h' or ext == '.c' then
-          return true
-        end
+        if ext == '.h' or ext == '.c' then return true end
         return false
       end,
       get_files_in_group = function(file_path)
