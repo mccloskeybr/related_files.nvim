@@ -24,15 +24,15 @@ M.setup = function(opts)
   end
 
   -- notify on misconfiguration once only, at startup.
-  for key, ext in pairs(M.opts.related) do
+  for group, ext in pairs(M.opts.groups) do
     if ext.is_in_group == nil then
       vim.notify(
-        'related_files: key: ' .. key .. ' is missing required callback is_in_group!',
+        'related_files: group: ' .. group .. ' is missing required callback is_in_group!',
         vim.log.levels.WARN)
     end
     if ext.get_files_in_group == nil then
       vim.notify(
-        'related_files: key: ' .. key .. ' is missing required callback get_files_in_group!',
+        'related_files: group: ' .. group .. ' is missing required callback get_files_in_group!',
         vim.log.levels.WARN)
     end
   end
@@ -44,7 +44,7 @@ M.open = function()
   -- loop through configured related files, match against callback, and add to list.
   num_files = 0
   related_files = {}
-  for key, ext in pairs(M.opts.group) do
+  for group, ext in pairs(M.opts.groups) do
     if ext.is_in_group == nil or ext.get_files_in_group == nil then
       goto continue
     end
