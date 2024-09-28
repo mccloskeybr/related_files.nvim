@@ -11,6 +11,7 @@ local M = {
 M.setup = function(opts)
   M.opts = vim.tbl_deep_extend("force", M.opts, opts)
 
+  -- configure an autogroup that closes the location list if configured.
   if M.opts.config.close_on_select then
     vim.api.nvim_create_autocmd('FileType', {
       group = vim.api.nvim_create_augroup(
@@ -22,6 +23,7 @@ M.setup = function(opts)
     })
   end
 
+  -- notify on misconfiguration once only, at startup.
   for key, ext in pairs(M.opts.related) do
     if ext.is_type == nil then
       vim.notify(
@@ -39,6 +41,7 @@ end
 M.open = function()
   local file_path = vim.fn.expand('%:p')
 
+  -- loop through configured related files, match against callback, and add to list.
   num_files = 0
   related_files = {}
   for key, ext in pairs(M.opts.related) do
@@ -48,9 +51,12 @@ M.open = function()
     if ext.is_type(file_path) == true then
       ext_related_files = ext.get_related(file_path)
       for _, ext_related_file in pairs(ext_related_files) do
+        -- NOTE: location list expects a certain table format: see :help setqflist.
         table.insert(related_files, { filename = ext_related_file })
         num_files = num_files + 1
       end
+
+      -- exit on first match if configured.
       if M.opts.config.stop_on_first_hit then goto done end
     end
     ::continue::
@@ -61,10 +67,11 @@ M.open = function()
     vim.notify(
       'related_files: no related files found for file: ' .. file_path,
       vim.log.levels.WARN)
-    else
-    vim.fn.setloclist(0, related_files)
-    vim.cmd.lopen()
+    return
   end
+
+  vim.fn.setloclist(0, related_files)
+  vim.cmd.lopen()
 end
 
 return M
