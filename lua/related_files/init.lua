@@ -4,7 +4,7 @@ local M = {
       close_on_select = true,
       stop_on_first_hit = false,
     },
-    related = {},
+    groups = {},
   },
 }
 
@@ -25,14 +25,14 @@ M.setup = function(opts)
 
   -- notify on misconfiguration once only, at startup.
   for key, ext in pairs(M.opts.related) do
-    if ext.is_type == nil then
+    if ext.is_in_group == nil then
       vim.notify(
-        'related_files: key: ' .. key .. ' is missing required callback is_type!',
+        'related_files: key: ' .. key .. ' is missing required callback is_in_group!',
         vim.log.levels.WARN)
     end
-    if ext.get_related == nil then
+    if ext.get_files_in_group == nil then
       vim.notify(
-        'related_files: key: ' .. key .. ' is missing required callback get_related!',
+        'related_files: key: ' .. key .. ' is missing required callback get_files_in_group!',
         vim.log.levels.WARN)
     end
   end
@@ -44,12 +44,12 @@ M.open = function()
   -- loop through configured related files, match against callback, and add to list.
   num_files = 0
   related_files = {}
-  for key, ext in pairs(M.opts.related) do
-    if ext.is_type == nil or ext.get_related == nil then
+  for key, ext in pairs(M.opts.group) do
+    if ext.is_in_group == nil or ext.get_files_in_group == nil then
       goto continue
     end
-    if ext.is_type(file_path) == true then
-      ext_related_files = ext.get_related(file_path)
+    if ext.is_in_group(file_path) == true then
+      ext_related_files = ext.get_files_in_group(file_path)
       for _, ext_related_file in pairs(ext_related_files) do
         -- NOTE: location list expects a certain table format: see :help setqflist.
         table.insert(related_files, { filename = ext_related_file })

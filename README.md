@@ -20,7 +20,7 @@ using regex to allow for easy hopping between files using location lists.
   },
   config = function()
     require('related_files').setup({
-      related = {
+      groups = {
         -- must define yourself, see Configuration.
       }
     })
@@ -37,8 +37,8 @@ expected to manually configure all file extension groups useful to you in order 
 
 There are 2 callback functions you are required to define per group:
 
-- `is_type(file_path)`: should return a bool if the given `file_path` is a part of this group.
-- `get_related(file_path)`: should return a list of strings for all files in a group with `file_path`.
+- `is_in_group(file_path)`: should return a bool if the given `file_path` is a part of this group.
+- `get_files_in_group(file_path)`: should return a list of strings for all files in a group with `file_path`.
 
 The name of each group is arbitrary / does not matter.
 
@@ -66,14 +66,14 @@ require('related_files').setup({
   },
   related = {
     c = {
-      is_type = function(file_path)
+      is_in_group = function(file_path)
         local _, _, ext = sep(file_path)
         if ext == '.h' or ext == '.c' then
           return true
         end
         return false
       end,
-      get_related = function(file_path)
+      get_files_in_group = function(file_path)
         local dir, name, _ = sep(file_path)
         return {
           dir .. name .. '.h',
