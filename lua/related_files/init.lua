@@ -3,6 +3,7 @@ local M = {
     config = {
       close_on_select = true,
       stop_on_first_hit = false,
+      format_func = my_format_func,
     },
     groups = {},
   },
@@ -52,7 +53,7 @@ M.open = function()
       ext_related_files = ext.get_files_in_group(file_path)
       for _, ext_related_file in pairs(ext_related_files) do
         -- NOTE: location list expects a certain table format: see :help setqflist.
-        table.insert(related_files, { filename = ext_related_file })
+        table.insert(related_files, { filename = ext_related_file, text = 'test' })
         num_files = num_files + 1
       end
 
@@ -70,7 +71,7 @@ M.open = function()
     return
   end
 
-  vim.fn.setloclist(0, related_files)
+  vim.fn.setloclist(0, {}, 'r', { items = related_files, quickfixtextfunc = M.opts.config.format_func })
   vim.cmd.lopen()
 end
 

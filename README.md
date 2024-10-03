@@ -1,7 +1,8 @@
 # related_files.nvim
 
-`related_files.nvim` is an unopinionated, lightweight plugin for grouping together filepaths
-using regex to allow for easy hopping between files using location lists.
+`related_files.nvim` is an unopinionated, lightweight plugin for grouping
+together filepaths using regex to allow for easy hopping between files using
+location lists.
 
 ![example](./example.gif)
 
@@ -37,13 +38,16 @@ using regex to allow for easy hopping between files using location lists.
 
 ### Groups
 
-`related_files.nvim` is unopinionated -- there are no default file groups to lean on. You are
-expected to manually configure all groups that are useful to you in order to use it properly.
+`related_files.nvim` is unopinionated -- there are no default file groups to
+lean on. You are expected to manually configure all groups that are useful to
+you in order to use it properly.
 
 There are 2 callback functions you are required to define per group:
 
-- `is_in_group(file_path)`: should return a bool if the given `file_path` is a part of this group.
-- `get_files_in_group(file_path)`: should return a list of strings for all files in a group with `file_path`.
+-   `is_in_group(file_path)`: should return a bool if the given `file_path` is a
+    part of this group.
+-   `get_files_in_group(file_path)`: should return a list of strings for all
+    files in a group with `file_path`.
 
 The name of each group is arbitrary / does not matter.
 
@@ -51,10 +55,24 @@ The name of each group is arbitrary / does not matter.
 
 `related_files.nvim` provides the following top-level configuration options:
 
-| opt                 | type   | description                                                                                                                                  | default |
-|---------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| `close_on_select`   | `bool` | Automatically closes the location list when an element has been selected.                                                                    | `true`  |
-| `stop_on_first_hit` | `bool` | A single file can map to multiple groups. If `stop_on_first_hit` is true, `related_files.nvim` only matches a single file to a single group. | `false` |
+| opt                 | type       | description                | default |
+| ------------------- | ---------- | -------------------------- | ------- |
+| `close_on_select`   | `bool`     | Automatically closes the   | `true`  |
+:                     :            : location list when an      :         :
+:                     :            : element has been selected. :         :
+| `stop_on_first_hit` | `bool`     | A single file can map to   | `false` |
+:                     :            : multiple groups. If        :         :
+:                     :            : `stop_on_first_hit` is     :         :
+:                     :            : true, `related_files.nvim` :         :
+:                     :            : only matches a single file :         :
+:                     :            : to a single group.         :         :
+| `format_func`       | `function` | Callback to format each    | `nil`   |
+:                     :            : line in the location list. :         :
+:                     :            : See `\:help                :         :
+:                     :            : quickfix-window-function`. :         :
+
+A single file can map to multiple groups. If `stop_on_first_hit` is true,
+`related_files.nvim` only matches a single file to a single group. | `false` |
 
 ### Example
 
@@ -90,8 +108,9 @@ require('related_files').setup({
 
 ## Functions
 
-`related_files.nvim` exposes a single function: `require('related_files').open()`.
-This will collect all configured related files for the current file and populate them in
-a location list associated with the current buffer.
+`related_files.nvim` exposes a single function:
+`require('related_files').open()`. This will collect all configured related
+files for the current file and populate them in a location list associated with
+the current buffer.
 
 There is no default keybind. I recommend configuring `<Leader>r`.
