@@ -46,8 +46,9 @@ There are 2 callback functions you are required to define per group:
 
 -   `is_in_group(file_path)`: should return a bool if the given `file_path` is a
     part of this group.
--   `get_files_in_group(file_path)`: should return a list of strings for all
-    files in a group with `file_path`.
+-   `get_files_in_group(file_path)`: should return a list of dicts for all files
+    in a group with `file_path`. Elements should adhere to the rules dictated by
+    `:help setqflist`. Popular fields to set may be `filename`, `text`.
 
 The name of each group is arbitrary / does not matter.
 
@@ -82,10 +83,27 @@ local sep = function(file_path)
   return string.match(file_path, '(.+[\\/])(.+[^%.])(%..+)$')
 end
 
+-- displays label :: filename for each related file in a group.
+-- in this example, that would be:
+-- dir1/dir2/example.h --> header :: example.h
+-- dir1/dir2/example.c --> impl :: example.c
+-- see :help quickfix-window-function for more info.
+local my_format_func = function(info)
+  items = vim.fn.getloclist(0, { id = info[id], items = 1 }).items
+  l = {}
+  for idx = info.start_idx, info.end_idx do
+    label = items[idx].text
+    file = vim.fn.fnamemodify(vim.fn.bufname(items[idx].bufnr), ':t')
+    table.insert(l, label .. ' :: ' .. file)
+  end
+  return l
+end
+
 require('related_files').setup({
   config = {
     close_on_select = true,
     stop_on_first_hit = false,
+    format_func = my_format_func,
   },
   groups = {
     c = {
@@ -97,8 +115,8 @@ require('related_files').setup({
       get_files_in_group = function(file_path)
         local dir, name, _ = sep(file_path)
         return {
-          dir .. name .. '.h',
-          dir .. name .. '.c',
+          { filename = dir .. name .. '.h', text = 'header' },
+          { filename = dir .. name .. '.c', text = 'impl'   },
         }
       end,
     }
