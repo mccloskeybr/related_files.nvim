@@ -60,7 +60,7 @@ The name of each group is arbitrary / does not matter.
 | ------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `close_on_select`   | `bool`     | Automatically closes the location list when an element has been selected.                                                                    | `true`  |
 | `stop_on_first_hit` | `bool`     | A single file can map to multiple groups. If `stop_on_first_hit` is true, `related_files.nvim` only matches a single file to a single group. | `false` |
-| `format_func`       | `function` | Callback to format each line in the location list.  See `\:help quickfix-window-function`.                                                   | `nil`   |
+| `format_func`       | `function` | Callback to format each line in the location list.  See `:help quickfix-window-function`.                                                    | `nil`   |
 
 ### Example
 
