@@ -56,24 +56,11 @@ The name of each group is arbitrary / does not matter.
 
 `related_files.nvim` provides the following top-level configuration options:
 
-| opt                 | type       | description                | default |
-| ------------------- | ---------- | -------------------------- | ------- |
-| `close_on_select`   | `bool`     | Automatically closes the   | `true`  |
-:                     :            : location list when an      :         :
-:                     :            : element has been selected. :         :
-| `stop_on_first_hit` | `bool`     | A single file can map to   | `false` |
-:                     :            : multiple groups. If        :         :
-:                     :            : `stop_on_first_hit` is     :         :
-:                     :            : true, `related_files.nvim` :         :
-:                     :            : only matches a single file :         :
-:                     :            : to a single group.         :         :
-| `format_func`       | `function` | Callback to format each    | `nil`   |
-:                     :            : line in the location list. :         :
-:                     :            : See `\:help                :         :
-:                     :            : quickfix-window-function`. :         :
-
-A single file can map to multiple groups. If `stop_on_first_hit` is true,
-`related_files.nvim` only matches a single file to a single group. | `false` |
+| opt                 | type       | description                                                                                                                                  | default |
+| ------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `close_on_select`   | `bool`     | Automatically closes the location list when an element has been selected.                                                                    | `true`  |
+| `stop_on_first_hit` | `bool`     | A single file can map to multiple groups. If `stop_on_first_hit` is true, `related_files.nvim` only matches a single file to a single group. | `false` |
+| `format_func`       | `function` | Callback to format each line in the location list.  See `\:help quickfix-window-function`.                                                   | `nil`   |
 
 ### Example
 
